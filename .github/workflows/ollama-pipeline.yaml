@@ -1,0 +1,44 @@
+name: Ollama Data Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ollama-pipeline:
+    if: "!contains(github.event.head_commit.message, 'gh-action-automation')"
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Docker
+      - name: Set up Docker
+        run: |
+          docker volume create ollama-local
+          docker compose -f 01-ollama/docker-compose.yml up -d
+
+      # Pull model
+      - name: Pull Ollama model
+        run: |
+          docker exec -it ollama ollama pull llama3.2:3b
+
+      # Run Python script
+      - name: Process JSON Inputs
+        run: |
+          cd 01-ollama
+          docker exec -it ollama python3 /data/process_inputs.py
+        env:
+          INPUT_FILE: "/data/input.json"
+
+      # Commit changes back to the main branch
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "gh-action-automation: Processed input data and generated variations"
+          git push
