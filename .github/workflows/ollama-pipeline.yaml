@@ -19,7 +19,7 @@ jobs:
       - name: Set up Docker
         run: |
           docker volume create ollama-local
-          docker compose -f 01-ollama/docker-compose.yml up -d
+          docker compose -f compose.yaml up -d
 
       # Pull model
       - name: Pull Ollama model
