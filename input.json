@@ -1,0 +1,12 @@
+{
+    "intent_tag": [
+        "sentence 1",
+        "sentence 2",
+        "sentence 3"
+    ],
+    "intent_tag2": [
+        "sentence 1",
+        "sentence 2",
+        "sentence 3"
+    ]
+}
