@@ -24,7 +24,7 @@ jobs:
       # Pull model
       - name: Pull Ollama model
         run: |
-          docker exec -it ollama ollama pull llama3.2:3b
+          docker exec ollama ollama pull llama3.2:3b
 
       # Run Python script
       - name: Process JSON Inputs
